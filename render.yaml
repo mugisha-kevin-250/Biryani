@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: biryani-house
+    env: static
+    buildCommand: ""
+    staticPublishPath: "."
+    envVars:
+      - key: NODE_VERSION
+        value: "18"
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html

@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biryani House - Menu</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="menu-style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script>
+        console.log('🍛 Biryani House - Loading...');
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCnoVYQ_BgOSNeVuJPE0hF92beCrWhpoPE",
+            authDomain: "shazam-coffee.firebaseapp.com",
+            projectId: "shazam-coffee",
+            storageBucket: "shazam-coffee.firebasestorage.app",
+            messagingSenderId: "303645613348",
+            appId: "1:303645613348:web:fd463f95c4bb95d16fa7b1",
+            databaseURL: "https://shazam-coffee-default-rtdb.firebaseio.com"
+        };
+        
+        // Wait for Firebase to load
+        let initAttempts = 0;
+        const initFirebase = setInterval(() => {
+            if (typeof firebase !== 'undefined' && firebase.initializeApp) {
+                clearInterval(initFirebase);
+                try {
+                    if (!firebase.apps.length) {
+                        firebase.initializeApp(firebaseConfig);
+                    }
+                    window.firebaseDB = firebase.database();
+                    console.log('✅ Biryani House - System Ready!');
+                } catch (error) {
+                    console.error('Firebase init error:', error);
+                    window.firebaseDB = null;
+                }
+            } else {
+                initAttempts++;
+                if (initAttempts > 100) {
+                    clearInterval(initFirebase);
+                    console.warn('⚠️ Using offline mode');
+                    window.firebaseDB = null;
+                }
+            }
+        }, 100);
+    </script>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="spice spice-1">🌶️</div>
+        <div class="spice spice-2">🍛</div>
+        <div class="spice spice-3">🧄</div>
+        <div class="spice spice-4">🧅</div>
+        <div class="spice spice-5">🍚</div>
+    </div>
+
+    <div class="container">
+        <header class="menu-header">
+            <div class="logo">
+                <div class="restaurant-icon">🍛</div>
+                <h1>Biryani House</h1>
+                <p class="tagline">🇮🇳 Indian & Local Fusion Cuisine</p>
+                <p class="location">📍 Remera, Kigali</p>
+            </div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search delicious food...">
+            </div>
+        </header>
+
+        <main class="menu-content">
+            <div class="category-filter">
+                <button class="filter-btn active" data-category="all">🍽️ All</button>
+                <button class="filter-btn" data-category="biryani">🍚 Biryanis</button>
+                <button class="filter-btn" data-category="curry">🍛 Curries</button>
+                <button class="filter-btn" data-category="tandoor">🔥 Tandoor</button>
+                <button class="filter-btn" data-category="local">🇷🇼 Local Dishes</button>
+                <button class="filter-btn" data-category="starters">🥗 Starters</button>
+                <button class="filter-btn" data-category="breads">🫓 Breads</button>
+                <button class="filter-btn" data-category="drinks">🥤 Drinks</button>
+                <button class="filter-btn" data-category="desserts">🍰 Desserts</button>
+                <button class="filter-btn" data-category="specials">⭐ Specials</button>
+            </div>
+
+            <!-- Biryani Section -->
+            <section class="menu-section" data-category="biryani">
+                <h2 class="section-title">🍚 Signature Biryanis</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" data-image="chicken_biryani.jpeg">
+                        <span class="item-name">Chicken Biryani</span>
+                        <span class="item-price">8,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="mutton_biryani.jpeg">
+                        <span class="item-name">Mutton Biryani</span>
+                        <span class="item-price">12,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="prawn_biryani.jpeg">
+                        <span class="item-name">Prawn Biryani</span>
+                        <span class="item-price">10,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="veg_biryani.jpeg">
+                        <span class="item-name">Vegetable Biryani</span>
+                        <span class="item-price">6,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="egg_biryani.jpeg">
+                        <span class="item-name">Egg Biryani</span>
+                        <span class="item-price">7,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="fish_biryani.jpeg">
+                        <span class="item-name">Fish Biryani</span>
+                        <span class="item-price">11,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="dam_biryani.jpeg">
+                        <span class="item-name">Dam Biryani (Special)</span>
+                        <span class="item-price">15,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="hyderabadi_biryani.jpeg">
+                        <span class="item-name">Hyderabadi Biryani</span>
+                        <span class="item-price">12,000 RWF</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Curries Section -->
+            <section class="menu-section" data-category="curry">
+                <h2 class="section-title">🍛 Delicious Curries</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" data-image="butter_chicken.jpeg">
+                        <span class="item-name">Butter Chicken</span>
+                        <span class="item-price">7,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="palak_paneer.jpeg">
+                        <span class="item-name">Palak Paneer</span>
+                        <span class="item-price">6,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="chicken_curry.jpeg">
+                        <span class="item-name">Chicken Curry</span>
+                        <span class="item-price">6,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="mutton_curry.jpeg">
+                        <span class="item-name">Mutton Curry</span>
+                        <span class="item-price">9,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="fish_curry.jpeg">
+                        <span class="item-name">Fish Curry</span>
+                        <span class="item-price">8,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="dal_makhani.jpeg">
+                        <span class="item-name">Dal Makhani</span>
+                        <span class="item-price">5,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="paneer_tikka.jpeg">
+                        <span class="item-name">Paneer Tikka Masala</span>
+                        <span class="item-price">7,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="chicken_tikka.jpeg">
+                        <span class="item-name">Chicken Tikka Masala</span>
+                        <span class="item-price">7,500 RWF</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tandoor Section -->
+            <section class="menu-section" data-category="tandoor">
+                <h2 class="section-title">🔥 Tandoor Specialties</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" data-image="chicken_tandoor.jpeg">
+                        <span class="item-name">Chicken Tandoori</span>
+                        <span class="item-price">8,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="fish_tandoor.jpeg">
+                        <span class="item-name">Fish Tandoori</span>
+                        <span class="item-price">9,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="tandoori_mix.jpeg">
+                        <span class="item-name">Tandoori Mix Grill</span>
+                        <span class="item-price">12,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="chicken_65.jpeg">
+                        <span class="item-name">Chicken 65</span>
+                        <span class="item-price">6,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="paneer_tikka_tandoor.jpeg">
+                        <span class="item-name">Paneer Tikka</span>
+                        <span class="item-price">6,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="malai_tikka.jpeg">
+                        <span class="item-name">Malai Tikka</span>
+                        <span class="item-price">7,000 RWF</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Local Dishes Section -->
+            <section class="menu-section" data-category="local">
+                <h2 class="section-title">🇷🇼 Local Fusion Dishes</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" data-image="brochettes.jpeg">
+                        <span class="item-name">Brochettes (Kebab)</span>
+                        <span class="item-price">5,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="fried_rice.jpeg">
+                        <span class="item-name">Indian Fried Rice</span>
+                        <span class="item-price">4,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="ugali_fish.jpeg">
+                        <span class="item-name">Ugali with Fish</span>
+                        <span class="item-price">5,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="isombe.jpeg">
+                        <span class="item-name">Isombe & Chicken</span>
+                        <span class="item-price">6,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="matoke.jpeg">
+                        <span class="item-name">Matoke Curry</span>
+                        <span class="item-price">5,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="akabanzi.jpeg">
+                        <span class="item-name">Akabanzi (Tilapia)</span>
+                        <span class="item-price">7,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image=" RWANDA.jpeg">
+                        <span class="item-name">Inyama & Ugali</span>
+                        <span class="item-price">6,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="street_food.jpeg">
+                        <span class="item-name">Street Food Platter</span>
+                        <span class="item-price">8,000 RWF</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Starters Section -->
+            <section class="menu-section" data-category="starters">
+                <h2 class="section-title">🥗 Appetizers & Starters</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" data-image="samosa.jpeg">
+                        <span class="item-name">Vegetable Samosa</span>
+                        <span class="item-price">2,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="pakora.jpeg">
+                        <span class="item-name">Vegetable Pakora</span>
+                        <span class="item-price">2,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="paneer_pakora.jpeg">
+                        <span class="item-name">Paneer Pakora</span>
+                        <span class="item-price">3,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="chicken_wings.jpeg">
+                        <span class="item-name">Chicken Wings</span>
+                        <span class="item-price">4,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="spring_rolls.jpeg">
+                        <span class="item-name">Spring Rolls</span>
+                        <span class="item-price">2,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="hummus.jpeg">
+                        <span class="item-name">Hummus with Pita</span>
+                        <span class="item-price">3,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="fish_fingers.jpeg">
+                        <span class="item-name">Fish Fingers</span>
+                        <span class="item-price">4,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="onion_rings.jpeg">
+                        <span class="item-name">Crispy Onion Rings</span>
+                        <span class="item-price">2,000 RWF</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Breads Section -->
+            <section class="menu-section" data-category="breads">
+                <h2 class="section-title">🫓 Indian Breads</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" data-image="garlic_naan.jpeg">
+                        <span class="item-name">Garlic Naan</span>
+                        <span class="item-price">1,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="butter_naan.jpeg">
+                        <span class="item-name">Butter Naan</span>
+                        <span class="item-price">1,200 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="plain_naan.jpeg">
+                        <span class="item-name">Plain Naan</span>
+                        <span class="item-price">800 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="roti.jpeg">
+                        <span class="item-name">Tandoori Roti</span>
+                        <span class="item-price">600 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="paratha.jpeg">
+                        <span class="item-name">Aloo Paratha</span>
+                        <span class="item-price">2,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="lachha_paratha.jpeg">
+                        <span class="item-name">Lachha Paratha</span>
+                        <span class="item-price">1,800 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="kulcha.jpeg">
+                        <span class="item-name">Paneer Kulcha</span>
+                        <span class="item-price">2,200 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="cheese_naan.jpeg">
+                        <span class="item-name">Cheese Naan</span>
+                        <span class="item-price">2,000 RWF</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Drinks Section -->
+            <section class="menu-section" data-category="drinks">
+                <h2 class="section-title">🥤 Refreshing Drinks</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" data-image="mango_lassi.jpeg">
+                        <span class="item-name">Mango Lassi</span>
+                        <span class="item-price">3,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="sweet_lassi.jpeg">
+                        <span class="item-name">Sweet Lassi</span>
+                        <span class="item-price">2,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="salt_lassi.jpeg">
+                        <span class="item-name">Salt Lassi</span>
+                        <span class="item-price">2,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="masala_chai.jpeg">
+                        <span class="item-name">Masala Chai</span>
+                        <span class="item-price">1,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="coffee.jpeg">
+                        <span class="item-name">Indian Filter Coffee</span>
+                        <span class="item-price">2,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="fresh_juice.jpeg">
+                        <span class="item-name">Fresh Fruit Juice</span>
+                        <span class="item-price">2,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="soft_drinks.jpeg">
+                        <span class="item-name">Soft Drinks</span>
+                        <span class="item-price">1,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="water.jpeg">
+                        <span class="item-name">Mineral Water</span>
+                        <span class="item-price">1,000 RWF</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Desserts Section -->
+            <section class="menu-section" data-category="desserts">
+                <h2 class="section-title">🍰 Sweet Desserts</h2>
+                <div class="menu-grid">
+                    <div class="menu-item" data-image="gulab_jamun.jpeg">
+                        <span class="item-name">Gulab Jamun</span>
+                        <span class="item-price">2,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="rasgulla.jpeg">
+                        <span class="item-name">Rasgulla</span>
+                        <span class="item-price">2,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="gajar_ka_halwa.jpeg">
+                        <span class="item-name">Gajar Ka Halwa</span>
+                        <span class="item-price">3,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="kheer.jpeg">
+                        <span class="item-name">Kheer (Rice Pudding)</span>
+                        <span class="item-price">2,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="ice_cream.jpeg">
+                        <span class="item-name">Ice Cream (any flavor)</span>
+                        <span class="item-price">2,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="brownie.jpeg">
+                        <span class="item-name">Chocolate Brownie</span>
+                        <span class="item-price">3,500 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image=" cheesecake.jpeg">
+                        <span class="item-name">Cheesecake</span>
+                        <span class="item-price">4,000 RWF</span>
+                    </div>
+                    <div class="menu-item" data-image="tiramisu.jpeg">
+                        <span class="item-name">Tiramisu</span>
+                        <span class="item-price">4,500 RWF</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Specials Section -->
+            <section class="menu-section" data-category="specials">
+                <h2 class="section-title">⭐ Chef's Special Recommendations</h2>
+                <div class="menu-grid">
+                    <div class="menu-item special-item" data-image="special_thali.jpeg">
+                        <span class="item-name">Biryani House Special Thali</span>
+                        <span class="item-price">15,000 RWF</span>
+                        <span class="special-badge">Best Seller!</span>
+                    </div>
+                    <div class="menu-item special-item" data-image="family_combo.jpeg">
+                        <span class="item-name">Family Combo (4 persons)</span>
+                        <span class="item-price">35,000 RWF</span>
+                        <span class="special-badge">Value!</span>
+                    </div>
+                    <div class="menu-item special-item" data-image="couple_date.jpeg">
+                        <span class="item-name">Couple's Date Night</span>
+                        <span class="item-price">18,000 RWF</span>
+                        <span class="special-badge">Romantic</span>
+                    </div>
+                    <div class="menu-item special-item" data-image="party_platter.jpeg">
+                        <span class="item-name">Party Platter (8 persons)</span>
+                        <span class="item-price">65,000 RWF</span>
+                        <span class="special-badge">Party!</span>
+                    </div>
+                    <div class="menu-item special-item" data-image="grill_combo.jpeg">
+                        <span class="item-name">Grill & Biryani Combo</span>
+                        <span class="item-price">12,000 RWF</span>
+                        <span class="special-badge">Popular</span>
+                    </div>
+                    <div class="menu-item special-item" data-image="veg_feast.jpeg">
+                        <span class="item-name">Vegetarian Feast</span>
+                        <span class="item-price">10,000 RWF</span>
+                        <span class="special-badge">Healthy</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="menu-footer">
+            <div class="footer-content">
+                <div class="contact-section">
+                    <p class="contact">📞 +250 788 000 000</p>
+                    <p class="email">✉️ biryanihousekgl@gmail.com</p>
+                    <p class="address">📍 Remera, Kigali, Rwanda</p>
+                </div>
+                <div class="hours-section">
+                    <h4>🕐 Opening Hours</h4>
+                    <p>Mon - Sun: 10:00 AM - 10:00 PM</p>
+                </div>
+                <p class="powered">🍛 Authentic Indian & Local Fusion</p>
+                <p class="signature">
+                    <a href="https://mugisha-aime-kevin.web.app/index.html" target="_blank" class="contact-link">Made with ❤️ by AMK Digital Solution</a>
+                </p>
+                <div id="contact-modal" class="contact-modal">
+                    <div class="contact-content">
+                        <span class="close" onclick="toggleContactInfo()">&times;</span>
+                        <h3>AMK Digital Solution</h3>
+                        <p><strong>Location:</strong> Kigali, Rwanda</p>
+                        <p><strong>Phone:</strong></p>
+                        <ul>
+                            <li><a href="tel:+250783309973">+250 783 309 973</a></li>
+                            <li><a href="tel:+250784039011">+250 784 039 011</a></li>
+                        </ul>
+                        <p><strong>Email:</strong></p>
+                        <ul>
+                            <li><a href="mailto:ashimirwejoseph@gmail.com">ashimirwejoseph@gmail.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="barista-link-container">
+                    <a href="barista.html" class="barista-link">
+                        🔐 Staff Dashboard
+                    </a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Active Orders Section -->
+    <div class="active-orders-container" id="activeOrdersContainer" style="display: none;">
+        <div class="active-orders-header">
+            <h3>🛒 Your Active Orders</h3>
+            <button class="close-orders-btn" id="closeOrdersBtn">✕</button>
+        </div>
+        <div id="activeOrdersList"></div>
+    </div>
+
+    <!-- Floating Orders Button -->
+    <button class="floating-orders-btn" id="floatingOrdersBtn">
+        <span class="order-count" id="orderCount">0</span>
+        🛍️
+    </button>
+
+    <!-- Customer Notifications Panel -->
+    <div id="customerNotificationsPanel" class="customer-notifications-panel" style="display: none;">
+        <div class="notifications-header">
+            <h3>📢 Restaurant Updates</h3>
+            <button class="notifications-close-btn" onclick="toggleNotificationsPanel()">✕</button>
+        </div>
+        <div id="notificationsContent" class="notifications-content">
+        </div>
+    </div>
+
+    <!-- Order Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🍛 Place Your Order</h2>
+                <span class="close-modal" id="closeModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="selected-item-display">
+                    <div class="item-info">
+                        <h3 id="selectedItemName"></h3>
+                        <p class="selected-price" id="selectedItemPrice"></p>
+                    </div>
+                    <div class="item-image-container">
+                        <img id="selectedItemImage" src="" alt="Food Image" class="selected-item-image">
+                    </div>
+                </div>
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label for="customerName">👤 Your Name *</label>
+                        <input type="text" id="customerName" required placeholder="Enter your name">
+                    </div>
+                    <div class="form-group">
+                        <label for="customerPhone">📱 Phone Number *</label>
+                        <input type="tel" id="customerPhone" required placeholder="+250 XXX XXX XXX" pattern="[+0-9\s\-()]+">
+                    </div>
+                    <div class="form-group">
+                        <label for="pickupTime">⏰ Pickup Time (minutes) *</label>
+                        <select id="pickupTime" required>
+                            <option value="">Select pickup time</option>
+                            <option value="10">10 minutes</option>
+                            <option value="15">15 minutes</option>
+                            <option value="20">20 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="60">60 minutes</option>
+                            <option value="90">1.5 hours</option>
+                            <option value="120">2 hours</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="specialInstructions">📝 Special Instructions (Optional)</label>
+                        <textarea id="specialInstructions" rows="3" placeholder="Any special requests? (spice level, allergies, etc.)"></textarea>
+                    </div>
+                    <div class="pickup-info">
+                        <p>📍 <strong>Pickup Location:</strong> Biryani House, Remera</p>
+                        <p>☎️ <strong>Contact:</strong> +250 788 000 000</p>
+                    </div>
+                    <button type="submit" class="submit-order-btn">✓ Confirm Order</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="modal" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💳 Payment</h2>
+                <span class="close-modal" id="closePaymentModal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="payment-item-display">
+                    <div class="payment-item-info">
+                        <h3 id="paymentItemName"></h3>
+                        <p class="payment-price" id="paymentItemPrice"></p>
+                    </div>
+                    <div class="payment-item-image-container">
+                        <img id="paymentItemImage" src="" alt="Food Image" class="payment-item-image">
+                    </div>
+                </div>
+                
+                <div class="payment-methods">
+                    <h4>Select Payment Method:</h4>
+                    <div class="payment-options">
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="mtn" checked>
+                            <span class="payment-icon">🟢</span>
+                            <span>MTN Mobile Money</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="paymentMethod" value="cash">
+                            <span class="payment-icon">💵</span>
+                            <span>Pay at Pickup</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="mtnPaymentSection" class="mtn-payment-section">
+                    <div class="form-group">
+                        <label for="mtnPhone">📱 MTN Phone Number *</label>
+                        <input type="tel" id="mtnPhone" placeholder="+250 7XX XXX XXX" pattern="[+0-9\s\-()]{12,}">
+                    </div>
+                    <p class="payment-instructions">
+                        You will receive a prompt on your phone to confirm payment of <span id="paymentAmount"></span> RWF
+                    </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="customerNamePayment">👤 Your Name *</label>
+                    <input type="text" id="customerNamePayment" required placeholder="Enter your name">
+                </div>
+                <div class="form-group">
+                    <label for="customerPhonePayment">📱 Phone Number *</label>
+                    <input type="tel" id="customerPhonePayment" required placeholder="+250 XXX XXX XXX" pattern="[+0-9\s\-()]{12,}">
+                </div>
+                <div class="form-group">
+                    <label for="pickupTimePayment">⏰ Pickup Time (minutes) *</label>
+                    <select id="pickupTimePayment" required>
+                        <option value="">Select pickup time</option>
+                        <option value="10">10 minutes</option>
+                        <option value="15">15 minutes</option>
+                        <option value="20">20 minutes</option>
+                        <option value="30">30 minutes</option>
+                        <option value="45">45 minutes</option>
+                        <option value="60">60 minutes</option>
+                        <option value="90">1.5 hours</option>
+                        <option value="120">2 hours</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="specialInstructionsPayment">📝 Special Instructions (Optional)</label>
+                    <textarea id="specialInstructionsPayment" rows="3" placeholder="Any special requests?"></textarea>
+                </div>
+                <div class="pickup-info">
+                    <p>📍 <strong>Pickup Location:</strong> Biryani House, Remera</p>
+                    <p>☎️ <strong>Contact:</strong> +250 788 000 000</p>
+                </div>
+                <button type="button" id="processPaymentBtn" class="submit-order-btn">✓ Pay & Confirm Order</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load menu script
+        setTimeout(() => {
+            const script = document.createElement('script');
+            script.src = 'menu-script.js';
+            document.body.appendChild(script);
+            console.log('🍛 Biryani House Menu Loaded');
+        }, 500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍛 Biryani House - Staff Dashboard</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="barista-style.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script>
+        console.log('🍛 Biryani House - Loading...');
+        
+        const firebaseConfig = {
+            apiKey: "AIzaSyCnoVYQ_BgOSNeVuJPE0hF92beCrWhpoPE",
+            authDomain: "shazam-coffee.firebaseapp.com",
+            projectId: "shazam-coffee",
+            storageBucket: "shazam-coffee.firebasestorage.app",
+            messagingSenderId: "303645613348",
+            appId: "1:303645613348:web:fd463f95c4bb95d16fa7b1",
+            databaseURL: "https://shazam-coffee-default-rtdb.firebaseio.com"
+        };
+        
+        // Wait for Firebase to load
+        let initAttempts = 0;
+        const initFirebase = setInterval(() => {
+            if (typeof firebase !== 'undefined' && firebase.initializeApp) {
+                clearInterval(initFirebase);
+                try {
+                    if (!firebase.apps.length) {
+                        firebase.initializeApp(firebaseConfig);
+                    }
+                    window.firebaseDB = firebase.database();
+                    console.log('✅ Biryani House - System Ready!');
+                } catch (error) {
+                    console.error('Firebase init error:', error);
+                    window.firebaseDB = null;
+                }
+            } else {
+                initAttempts++;
+                if (initAttempts > 100) {
+                    clearInterval(initFirebase);
+                    console.warn('⚠️ Using offline mode');
+                    window.firebaseDB = null;
+                }
+            }
+        }, 100);
+    </script>
+</head>
+<body>
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="login-icon">🍛</div>
+                <h1>Staff Access</h1>
+                <p class="login-subtitle">Biryani House - Remera, Kigali</p>
+            </div>
+            
+            <!-- Role Selection -->
+            <div class="role-selector" id="roleSelector">
+                <p class="role-selector-title">Select Your Role</p>
+                <button type="button" class="role-btn" onclick="selectRole('barista')">👨‍🍳 Chef/Staff</button>
+                <button type="button" class="role-btn" onclick="selectRole('manager')">📊 Manager</button>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)" class="hidden-form">
+                <!-- Barista Login Info -->
+                <div id="baristaLoginInfo" class="barista-login-info">
+                    <p class="barista-login-title">👨‍🍳 Staff Login</p>
+                    <p class="barista-login-text">Enter your credentials below</p>
+                    <p class="barista-login-text-small">Contact manager for credentials</p>
+                </div>
+                
+                <!-- Manager Login Info -->
+                <div id="managerLoginInfo" class="barista-login-info manager-login-info">
+                    <p class="barista-login-title">📊 Manager Login</p>
+                    <p class="manager-credentials">
+                        <strong>Username:</strong> kevin<br>
+                        <strong>Password:</strong> eeettt123
+                    </p>
+                </div>
+                
+                <div class="form-group">
+                    <label for="username">👤 Username *</label>
+                    <input type="text" id="username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">🔐 Password:</label>
+                    <input type="password" id="password" placeholder="Enter password" required>
+                </div>
+                <div class="form-group keyword-group" style="display: none;">
+                    <label for="keyword">🔑 Keyword:</label>
+                    <input type="password" id="keyword" placeholder="Enter keyword (default: biryani)" value="biryani">
+                </div>
+                <button type="submit" class="login-btn">✓ Login</button>
+            </form>
+            <div class="login-error" id="loginError"></div>
+            <div class="login-footer">
+                <a href="menu.html" class="home-btn">🏠 Back to Menu</a>
+                <button type="button" class="back-role-btn hidden" id="backRoleBtn" onclick="backToRoleSelection()">← Back</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-container" id="dashboardContainer">
+        <!-- Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="restaurant-icon">🍛</div>
+                    <div>
+                        <h1>Staff Dashboard</h1>
+                        <p class="subtitle">🍛 Biryani House - Remera, Kigali</p>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalOrders">0</span>
+                        <span class="stat-label">Total Orders</span>
+                    </div>
+                    <div class="stat-card active-stat">
+                        <span class="stat-number" id="activeOrders">0</span>
+                        <span class="stat-label">In Kitchen</span>
+                    </div>
+                    <div class="stat-card completed-stat">
+                        <span class="stat-number" id="completedOrders">0</span>
+                        <span class="stat-label">Ready</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Controls -->
+        <div class="controls-bar">
+            <div class="controls-left">
+                <button class="control-btn" id="refreshBtn">
+                    🔄 Refresh
+                </button>
+            </div>
+            <div class="controls-right">
+                <button class="control-btn logout-btn" onclick="logoutBarista()">
+                    🚪 Logout
+                </button>
+                <a href="menu.html" class="control-btn back-btn">
+                    ← Back to Menu
+                </a>
+            </div>
+        </div>
+
+        <!-- Orders Grid -->
+        <main class="orders-section">
+            <div id="ordersContainer">
+                <!-- Orders will be dynamically inserted here -->
+            </div>
+            <div class="empty-state" id="emptyState">
+                <div class="empty-icon">🍽️</div>
+                <h2>No Orders Yet</h2>
+                <p>Customer orders will appear here in real-time</p>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p class="footer-text">📍 Remera, Kigali | 📞 +250 788 000 000</p>
+            <p class="signature">
+                <a href="https://mugisha-aime-kevin.web.app/index.html" target="_blank">Made with ?? by AMK Digital Solution</a>
+            </p>
+            <div id="contact-modal" class="contact-modal">
+                <div class="contact-content">
+                    <span class="close" onclick="toggleContactInfo()">&times;</span>
+                    <h3>AMK Digital Solution</h3>
+                    <p><strong>Location:</strong> Kigali, Rwanda</p>
+                    <p><strong>Phone:</strong></p>
+                    <ul>
+                        <li><a href="tel:+250783309973">+250 783 309 973</a></li>
+                        <li><a href="tel:+250784039011">+250 784 039 011</a></li>
+                    </ul>
+                    <p><strong>Email:</strong></p>
+                    <ul>
+                        <li><a href="mailto:ashimirwejoseph@gmail.com">ashimirwejoseph@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- MANAGER DASHBOARD -->
+    <div class="manager-dashboard" id="managerDashboard">
+        <!-- Manager Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="restaurant-icon">📊</div>
+                    <div>
+                        <h1>Manager Dashboard</h1>
+                        <p class="subtitle">🍛 Biryani House - Order Management</p>
+                    </div>
+                </div>
+                <div class="header-stats">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalOrdersManager">0</span>
+                        <span class="stat-label">Total Orders</span>
+                    </div>
+                    <div class="stat-card active-stat">
+                        <span class="stat-number" id="pendingOrdersManager">0</span>
+                        <span class="stat-label">Pending</span>
+                    </div>
+                    <div class="stat-card completed-stat">
+                        <span class="stat-number" id="completedOrdersManager">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Manager Controls -->
+        <div class="controls-bar">
+            <div class="controls-left">
+                <button class="control-btn" id="manageBaristaBtn">👨‍🍳 Manage Staff</button>
+                <button class="control-btn" id="postAnnouncementBtn">📢 Post Announcement</button>
+                <button class="control-btn" id="refreshManagerBtn">🔄 Refresh</button>
+                <input type="date" id="managerDateFilter" class="control-btn" title="Filter orders by date">
+                <button class="control-btn" id="resetDateFilterBtn" onclick="resetManagerDateFilter()">🔄 Today</button>
+            </div>
+            <div class="controls-right">
+                <button class="control-btn logout-btn" onclick="logoutManager()">🚪 Logout</button>
+                <a href="menu.html" class="control-btn back-btn">← Back to Menu</a>
+            </div>
+        </div>
+
+        <!-- Manager Content -->
+        <main class="orders-section">
+            <div class="manager-content-wrapper">
+                <!-- Orders List -->
+                <div>
+                    <h2 class="manager-orders-header">📋 All Orders</h2>
+                    <div id="managerOrdersContainer">
+                        <!-- Orders will be listed here -->
+                    </div>
+                </div>
+                <!-- Staff List -->
+                <div>
+                    <h2 class="manager-baristas-header">👥 Staff Members</h2>
+                    <div id="baristasListContainer" class="baristas-container">
+                        <!-- Staff will be listed here -->
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="dashboard-footer">
+            <p class="footer-text">📍 Remera, Kigali | 📞 +250 788 000 000</p>
+            <p class="signature">
+                <a href="https://mugisha-aime-kevin.web.app/index.html" target="_blank">Made with ?? by AMK Digital Solution</a>
+            </p>
+            <div id="contact-modal-manager" class="contact-modal">
+                <div class="contact-content">
+                    <span class="close" onclick="toggleContactInfoManager()">&times;</span>
+                    <h3>AMK Digital Solution</h3>
+                    <p><strong>Location:</strong> Kigali, Rwanda</p>
+                    <p><strong>Phone:</strong></p>
+                    <ul>
+                        <li><a href="tel:+250783309973">+250 783 309 973</a></li>
+                        <li><a href="tel:+250784039011">+250 784 039 011</a></li>
+                    </ul>
+                    <p><strong>Email:</strong></p>
+                    <ul>
+                        <li><a href="mailto:ashimirwejoseph@gmail.com">ashimirwejoseph@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Staff Management Modal -->
+    <div class="modal" id="baristaManagementModal">
+        <div class="modal-content modal-content-wrapper">
+            <div class="modal-header barista-management-header">
+                <h2>👥 Manage Staff</h2>
+                <span class="close-modal close-modal-btn" id="closeBaristaModal">&times;</span>
+            </div>
+            <div class="modal-body modal-body-padding">
+                <!-- Add New Staff Section -->
+                <div class="add-barista-wrapper">
+                    <h3>➕ Add New Staff</h3>
+                    <input type="text" id="baristaNameInput" class="barista-name-input" placeholder="Enter staff name..." required>
+                    <input type="text" id="baristaUsernameInput" class="barista-name-input" placeholder="Enter username..." required>
+                    <input type="password" id="baristaPasswordInput" class="barista-name-input" placeholder="Enter password..." required>
+                    <button onclick="addBarista()" class="add-barista-submit-btn">✓ Add Staff</button>
+                </div>
+
+                <!-- Divider -->
+                <div class="modal-divider-wrapper">
+                    <span>or</span>
+                    <hr>
+                </div>
+
+                <!-- Active Staff List -->
+                <div class="active-baristas-header">
+                    <h3>👥 Active Staff</h3>
+                    <div id="baristaListInModal" class="barista-list-scroll">
+                        <div class="loading-message">Loading staff...</div>
+                    </div>
+                </div>
+
+                <!-- Modal Footer with Cancel -->
+                <div class="modal-buttons-wrapper">
+                    <button onclick="document.getElementById('baristaManagementModal').style.display = 'none';" class="modal-cancel-btn-style">✕ Cancel</button>
+                    <button onclick="closeBaristaManagementModal()" class="modal-done-btn-style">✓ Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Assignment Modal -->
+    <div class="modal" id="orderAssignmentModal">
+        <div class="modal-content modal-content-wrapper">
+            <div class="modal-header assignment-modal-header">
+                <h2>📋 Assign Order to Staff</h2>
+                <span class="close-modal close-assignment-modal-btn" id="closeAssignmentModal">&times;</span>
+            </div>
+            <div class="modal-body assignment-modal-body">
+                <!-- Order Info Card -->
+                <div id="assignmentOrderInfo" class="assignment-order-info-card">
+                    <!-- Order info will be here -->
+                </div>
+                
+                <!-- Staff Selection Section -->
+                <div class="barista-selection-section">
+                    <label for="baristaAssignmentSelect">👨‍🍳 Select Staff to Assign:</label>
+                    <select id="baristaAssignmentSelect" title="Select a staff member to assign the order">
+                        <option value="">👨‍🍳 Choose staff...</option>
+                    </select>
+                </div>
+                
+                <!-- Action Buttons -->
+                <div class="assignment-action-buttons">
+                    <button onclick="document.getElementById('orderAssignmentModal').style.display = 'none';" class="assignment-cancel-btn">✕ Cancel</button>
+                    <button onclick="confirmAssignment()" class="assignment-confirm-btn">✓ Assign Order</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal" id="orderDetailsModal">
+        <div class="modal-content order-details-content">
+            <div class="modal-header">
+                <h2>Order Details</h2>
+                <span class="close-modal" id="closeDetailsModal">&times;</span>
+            </div>
+            <div class="modal-body" id="orderDetailsBody">
+                <!-- Order details will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Sound -->
+    <audio id="notificationSound" preload="auto" class="hidden-audio">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLYizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBSh+zPLaizsIHGm98OScTgwPUKXh8LRgGwU7k9vzzn4yBQ==" type="audio/wav">
+    </audio>
+
+    <!-- Shop Announcements Notification -->
+    <div class="announcement-notification" id="announcementNotification">
+        <div class="announcement-container">
+            <div class="announcement-header">
+                <span class="announcement-icon">📢</span>
+                <span class="announcement-title">Restaurant Updates</span>
+                <span class="announcement-close" onclick="closeAnnouncement()">&times;</span>
+            </div>
+            <div class="announcement-content" id="announcementContent">
+                Loading announcement...
+            </div>
+        </div>
+    </div>
+
+    <!-- Announcement Post Modal -->
+    <div class="modal" id="announcementModal">
+        <div class="modal-content modal-content-wrapper">
+            <div class="modal-header">
+                <h2>📢 Post Announcement</h2>
+                <span class="close-modal" id="closeAnnouncementModal">&times;</span>
+            </div>
+            <div class="modal-body modal-body-padding">
+                <form id="announcementForm" onsubmit="submitAnnouncement(event)">
+                    <div class="form-group">
+                        <label for="announcementText">📝 Announcement Message:</label>
+                        <textarea id="announcementText" placeholder="Enter your announcement or update..." rows="6" required></textarea>
+                        <small class="form-small-text">Max 500 characters. This will be displayed to all customers.</small>
+                    </div>
+                    <div class="modal-buttons-wrapper">
+                        <button type="button" onclick="closeAnnouncementModal()" class="modal-cancel-btn-style">✕ Cancel</button>
+                        <button type="submit" class="modal-done-btn-style">✓ Done</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load staff script
+        setTimeout(() => {
+            const script = document.createElement('script');
+            script.src = 'staff-script.js';
+            document.body.appendChild(script);
+            console.log('🍛 Biryani House Staff Dashboard Loaded');
+        }, 500);
+    </script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="biryaniGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f1c40f;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#e67e22;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#d35400;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="spiceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#c0392b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e74c3c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Bowl body -->
+  <path d="M 15 45 Q 15 80 50 80 Q 85 80 85 45 Z" 
+        fill="url(#biryaniGradient)" stroke="#c0392b" stroke-width="2"/>
+  
+  <!-- Bowl rim -->
+  <ellipse cx="50" cy="45" rx="35" ry="8" fill="#f39c12" stroke="#c0392b" stroke-width="2"/>
+  
+  <!-- Rice grains -->
+  <ellipse cx="35" cy="42" rx="4" ry="2" fill="#fff" opacity="0.8"/>
+  <ellipse cx="50" cy="40" rx="4" ry="2" fill="#fff" opacity="0.8"/>
+  <ellipse cx="65" cy="42" rx="4" ry="2" fill="#fff" opacity="0.8"/>
+  <ellipse cx="42" cy="46" rx="4" ry="2" fill="#fff" opacity="0.7"/>
+  <ellipse cx="58" cy="46" rx="4" ry="2" fill="#fff" opacity="0.7"/>
+  
+  <!-- Chicken/meat piece -->
+  <circle cx="40" cy="38" r="5" fill="url(#spiceGradient)"/>
+  <circle cx="55" cy="36" r="4" fill="url(#spiceGradient)"/>
+  
+  <!-- Garnish/herbs -->
+  <circle cx="30" cy="44" r="2" fill="#27ae60"/>
+  <circle cx="45" cy="44" r="2" fill="#27ae60"/>
+  <circle cx="60" cy="44" r="2" fill="#27ae60"/>
+  <circle cx="50" cy="48" r="2" fill="#27ae60"/>
+  
+  <!-- Steam/aroma lines -->
+  <path d="M 35 30 Q 33 22 35 15" fill="none" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" opacity="0.7">
+    <animate attributeName="opacity" values="0.7;0.3;0.7" dur="2s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 50 25 Q 48 17 50 10" fill="none" stroke="#e67e22" stroke-width="2" stroke-linecap="round" opacity="0.6">
+    <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2.5s" repeatCount="indefinite"/>
+  </path>
+  <path d="M 65 30 Q 67 22 65 15" fill="none" stroke="#f1c40f" stroke-width="2" stroke-linecap="round" opacity="0.5">
+    <animate attributeName="opacity" values="0.5;0.2;0.5" dur="2.2s" repeatCount="indefinite"/>
+  </path>
+</svg>

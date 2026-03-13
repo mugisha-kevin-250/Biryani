@@ -1,0 +1,18 @@
+{
+  "rules": {
+    ".read": true,
+    ".write": true,
+    "orders": {
+      ".read": true,
+      ".write": true
+    },
+    "baristas": {
+      ".read": true,
+      ".write": true
+    },
+    "announcements": {
+      ".read": true,
+      ".write": true
+    }
+  }
+}

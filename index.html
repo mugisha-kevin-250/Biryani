@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🍛 Biryani House - Authentic Indian & Local Fusion</title>
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a0f0a 0%, #2d1810 25%, #4a2c17 50%, #6b3d1f 75%, #8b4513 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .spice {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.12;
+            animation: floatSpice 20s infinite linear;
+        }
+
+        .spice-1 { top: 5%; left: 8%; animation-delay: 0s; }
+        .spice-2 { top: 15%; right: 12%; animation-delay: 4s; }
+        .spice-3 { top: 35%; left: 5%; animation-delay: 8s; }
+        .spice-4 { top: 55%; right: 18%; animation-delay: 12s; }
+        .spice-5 { top: 75%; left: 10%; animation-delay: 16s; }
+        .spice-6 { top: 25%; right: 5%; animation-delay: 5s; }
+        .spice-7 { top: 65%; left: 15%; animation-delay: 10s; }
+
+        @keyframes floatSpice {
+            0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 0.1; }
+            25% { transform: translateY(-30px) rotate(90deg) scale(1.2); opacity: 0.2; }
+            50% { transform: translateY(-15px) rotate(180deg) scale(1); opacity: 0.15; }
+            75% { transform: translateY(-35px) rotate(270deg) scale(1.2); opacity: 0.2; }
+            100% { transform: translateY(0) rotate(360deg) scale(1); opacity: 0.1; }
+        }
+
+        .container {
+            max-width: 900px;
+            width: 95%;
+            background: linear-gradient(180deg, #fffef8 0%, #fff9f0 50%, #fff5e6 100%);
+            border-radius: 30px;
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.5),
+                0 0 120px rgba(255, 193, 7, 0.15);
+            overflow: hidden;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            border: 4px solid #f1c40f;
+            animation: containerFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes containerFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 60px 30px 40px;
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 25%, #d35400 50%, #e67e22 75%, #f39c12 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+            animation: shimmer 4s infinite linear;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            animation: sizzle 2s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes sizzle {
+            0%, 100% { transform: scale(1) rotate(-8deg); }
+            50% { transform: scale(1.15) rotate(8deg); }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            color: #fff;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-shadow: 
+                4px 4px 0 #c0392b,
+                -2px -2px 0 #f1c40f,
+                0 0 30px rgba(241, 196, 15, 0.6);
+            letter-spacing: 4px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .tagline {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            color: #fff8dc;
+            font-weight: 300;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .location {
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            color: #f1c40f;
+            font-weight: 500;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Info Section */
+        .info-section {
+            padding: 40px 30px;
+            background: linear-gradient(180deg, #fff9f0 0%, #fff5e6 100%);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 35px;
+        }
+
+        .feature {
+            padding: 25px 20px;
+            background: linear-gradient(135deg, #fff 0%, #fffbf0 100%);
+            border-radius: 20px;
+            border: 2px solid #f1c40f;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 15px 40px rgba(241, 196, 15, 0.3);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .feature h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: #c0392b;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .feature p {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        /* CTA Buttons */
+        .cta-section {
+            padding: 30px;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            padding: 18px 40px;
+            border-radius: 35px;
+            text-decoration: none;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            border: none;
+        }
+
+        .cta-btn-primary {
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #d35400 100%);
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(192, 57, 43, 0.5);
+            border: 3px solid #f1c40f;
+        }
+
+        .cta-btn-primary:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(230, 126, 34, 0.6);
+        }
+
+        .cta-btn-secondary {
+            background: linear-gradient(135deg, #f1c40f 0%, #e67e22 100%);
+            color: #1a0f0a;
+            box-shadow: 0 8px 25px rgba(241, 196, 15, 0.5);
+            border: 3px solid #fff;
+        }
+
+        .cta-btn-secondary:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(241, 196, 15, 0.6);
+        }
+
+        /* Contact Info */
+        .contact-info {
+            padding: 30px;
+            background: linear-gradient(135deg, #1a0f0a 0%, #2d1810 100%);
+            color: #fff8dc;
+        }
+
+        .contact-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: #f1c40f;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.05rem;
+        }
+
+        .contact-item span:first-child {
+            font-size: 1.5rem;
+        }
+
+        .hours {
+            font-size: 1rem;
+            color: #ccc;
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer {
+            padding: 20px;
+            background: linear-gradient(135deg, #c0392b 0%, #e74c3c 100%);
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .footer a {
+            color: #f1c40f;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 98%;
+                border-radius: 20px;
+            }
+
+            .hero {
+                padding: 45px 20px 30px;
+            }
+
+            .logo-icon {
+                font-size: 4.5rem;
+            }
+
+            .info-section {
+                padding: 30px 20px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .contact-details {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                padding: 35px 15px 25px;
+            }
+
+            .logo-icon {
+                font-size: 3.5rem;
+            }
+
+            .cta-btn {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <div class="spice spice-1">🌶️</div>
+        <div class="spice spice-2">🍛</div>
+        <div class="spice spice-3">🧄</div>
+        <div class="spice spice-4">🧅</div>
+        <div class="spice spice-5">🍚</div>
+        <div class="spice spice-6">🥘</div>
+        <div class="spice spice-7">🍗</div>
+    </div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <div class="hero">
+            <div class="logo-icon">🍛</div>
+            <h1>Biryani House</h1>
+            <p class="tagline">🇮🇳 Authentic Indian & Local Fusion Cuisine</p>
+            <p class="location">📍 Remera, Kigali, Rwanda</p>
+        </div>
+
+        <!-- Info Section -->
+        <div class="info-section">
+            <div class="features">
+                <div class="feature">
+                    <span class="feature-icon">🍚</span>
+                    <h3>Signature Biryanis</h3>
+                    <p>Master-crafted biryanis with authentic spices and premium ingredients</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🍛</span>
+                    <h3>Curries & Tandoor</h3>
+                    <p>Rich, aromatic curries and sizzling tandoor specialties</p>
+                </div>
+                <div class="feature">
+                    <span class="feature-icon">🇷🇼</span>
+                    <h3>Local Fusion</h3>
+                    <p>Unique blend of Indian and Rwandan culinary traditions</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <div class="cta-buttons">
+                <a href="menu.html" class="cta-btn cta-btn-primary">
+                    🍽️ View Menu & Order
+                </a>
+                <a href="barista.html" class="cta-btn cta-btn-secondary">
+                    🔐 Staff Dashboard
+                </a>
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="contact-info">
+            <h3>📞 Get In Touch</h3>
+            <div class="contact-details">
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span>+250 788 000 000</span>
+                </div>
+                <div class="contact-item">
+                    <span>✉️</span>
+                    <span>biryanihousekgl@gmail.com</span>
+                </div>
+                <div class="contact-item">
+                    <span>📍</span>
+                    <span>Remera, Kigali</span>
+                </div>
+            </div>
+            <p class="hours">🕐 Open Daily: 10:00 AM - 10:00 PM</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>🍛 Made with ❤️ by <a href="https://mugisha-aime-kevin.web.app/index.html" target="_blank">AMK Digital Solution</a></p>
+        </div>
+    </div>
+</body>
+</html>

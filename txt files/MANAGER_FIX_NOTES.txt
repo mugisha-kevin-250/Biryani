@@ -1,0 +1,71 @@
+MANAGER DASHBOARD ENHANCEMENTS
+==============================
+
+PREVIOUS PROBLEM FIXED (Phase 1):
+The manager was not seeing customer orders in the manager dashboard, making it impossible 
+to assign orders to baristas.
+
+NEW FEATURES ADDED (Phase 2):
+Managers now have powerful tools to manage daily order workflow efficiently.
+
+FEATURES IMPLEMENTED:
+
+1. DATE FILTERING & SORTING (staff-script.js)
+   - Added date picker to manager control bar
+   - Orders filtered by selected date
+   - Default view shows today's orders only
+   - "🔄 Today" button returns to current day view
+   - Date sorting helper functions (getStartOfDay, getEndOfDay)
+   - Functions: setManagerDateFilter(), resetManagerDateFilter()
+
+2. DAILY ORDER RESET (staff-script.js)
+   - Automatic daily reset at midnight (00:00)
+   - Completed orders marked as "archived"
+   - Fresh order list each new day
+   - Archived orders excluded from daily view but accessible via date picker
+   - Functions: startDailyResetTimer(), archiveCompletedOrders()
+
+3. ORDER TIME WINDOW VALIDATION (menu-script.js)
+   - Orders only accepted 6:00 AM - 11:59 PM
+   - Customer sees error if ordering outside hours
+   - Error message: "We accept orders from 6:00 AM to 12:00 AM (midnight)"
+   - Validation: isOrderingTimeAllowed() checks current hour >= 6
+
+4. DELETE COMPLETED ORDERS (staff-script.js)
+   - Red 🗑️ delete button on completed (green) orders
+   - Confirmation dialog prevents accidents
+   - Only completed orders can be deleted
+   - Functions: deleteCompletedOrder(), deleteOrderFromLocalStorage()
+   - Works with Firebase and localStorage fallback
+
+5. ENHANCED MANAGER UI (barista.html)
+   - Date picker input in control bar
+   - "🔄 Today" reset button
+   - Better order display with dates
+   - Styled to match dashboard theme
+   - Mobile-friendly responsive design
+
+PREVIOUS FIXES (Still in place):
+- Enhanced manager data loading with Firebase real-time updates
+- Improved order card rendering with full details
+- Firebase rules with barista read/write support
+- Assignment modal with customer context
+
+HOW TO USE THE NEW FEATURES:
+1. Manager logs in to barista.html
+2. Date picker shows today's date by default
+3. All today's orders display
+4. Manager can click date picker to select different dates
+5. Click "🔄 Today" to return to current day
+6. Click red 🗑️ delete button on completed orders to remove them
+7. Orders marked completed at midnight are archived automatically
+8. Customers can't place orders before 6 AM or after midnight
+
+ORDERS FLOW (UPDATED):
+Customer → Places Order (6 AM-Midnight) → Firebase stores order
+Manager → Views today's orders → Assigns to barista → Deletes when complete
+Barista → Logs in → Sees their assigned orders → Marks complete
+Midnight → Completed orders archived → New day starts fresh
+Manager → Can view archived orders via date picker
+
+All changes maintain fallback to localStorage for offline functionality.

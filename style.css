@@ -1,0 +1,313 @@
+/* Font Face for Quesha */
+@font-face {
+    font-family: 'Quesha';
+    src: url('./quesha-font/Quesha-gndR.ttf') format('truetype');
+}
+
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Quesha', cursive;
+    background: linear-gradient(135deg, #2c1810, #5c3d2e, #8b6f47, #d4a574); /* Rich coffee gradient */
+    color: #fff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-family: 'Quesha', cursive;
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+    margin-bottom: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+header p {
+    font-family: 'Quesha', cursive;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    opacity: 0.9;
+}
+
+.menu-container {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 15px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
+}
+
+.menu-link {
+    text-decoration: none;
+    display: block;
+}
+
+.view-menu-btn {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px 40px;
+    font-size: clamp(1.3rem, 3vw, 1.7rem);
+    font-family: 'Quesha', cursive;
+    font-weight: normal;
+    background: linear-gradient(135deg, #5c3d2e, #3e2723);
+    color: #ffd89b;
+    border: 3px solid #d4a574;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.view-menu-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #3e2723, #2c1810);
+    border-color: #ffd89b;
+}
+
+.view-menu-btn:active {
+    transform: translateY(0);
+}
+
+.controls {
+    margin-top: 20px;
+}
+
+button {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-family: 'Quesha', cursive;
+    font-weight: normal;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background: #45a049;
+}
+
+.qr-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.qr-container h2 {
+    font-family: 'Quesha', cursive;
+    margin-bottom: 20px;
+    font-size: clamp(1.4rem, 4vw, 1.9rem);
+    color: #fff;
+    font-weight: normal;
+}
+
+#qrcode {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    max-width: 250px;
+    width: 100%;
+}
+
+#qrcode img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+footer {
+    margin-top: 30px;
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+.signature {
+    font-family: 'Quesha', cursive;
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
+    margin-top: 15px;
+    opacity: 0.9;
+    color: #ffd89b;
+    font-weight: normal;
+}
+
+.contact-link {
+    color: #ffffff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-bottom: 2px dotted #3e2723;
+}
+
+.contact-link:hover {
+    opacity: 0.7;
+    transform: scale(1.05);
+}
+
+/* Modal styles */
+.contact-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.contact-modal[style*="display: flex"],
+.contact-modal[style*="display:flex"] {
+    display: flex !important;
+}
+
+.contact-content {
+    background: linear-gradient(135deg, #351e1a);
+    border-radius: 15px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    border: 2px solid #d4a574;
+    position: relative;
+    color: #fff;
+}
+
+.contact-content h3 {
+    font-family: 'Quesha', cursive;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #ffd89b;
+    font-weight: normal;
+}
+
+.contact-content p {
+    font-family: 'Quesha', cursive;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.contact-content strong {
+    color: #d4a574;
+}
+
+.contact-content ul {
+    list-style: none;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.contact-content li {
+    margin-bottom: 8px;
+    font-family: 'Quesha', cursive;
+    font-size: 1rem;
+}
+
+.contact-content a {
+    color: #ffd89b;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.contact-content a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    color: #ffd89b;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close:hover {
+    color: #fff;
+    transform: scale(1.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    body {
+        padding: 5px;
+    }
+    
+    .container {
+        padding: 10px;
+    }
+    
+    header {
+        margin-bottom: 20px;
+    }
+    
+    .menu-container {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+    
+    .qr-container {
+        margin-top: 20px;
+    }
+    
+    #qrcode {
+        padding: 10px;
+        max-width: 200px;
+    }
+    
+    footer {
+        font-size: 0.8rem;
+        margin-top: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        margin-bottom: 15px;
+    }
+    
+    .menu-container {
+        padding: 8px;
+    }
+    
+    #qrcode {
+        padding: 8px;
+        max-width: 180px;
+    }
+    
+    footer {
+        font-size: 0.75rem;
+    }
+}
