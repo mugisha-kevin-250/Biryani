@@ -1274,6 +1274,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // ===== ANNOUNCEMENT SYSTEM =====
 let announcementTimeoutId = null;
+let lastDisplayedAnnouncement = null;
 
 function initializeAnnouncements() {
     loadLatestAnnouncement();
@@ -1310,7 +1311,13 @@ function loadLatestAnnouncement() {
 function displayAnnouncement(message, timestamp) {
     const notification = document.getElementById('announcementNotification');
     const content = document.getElementById('announcementContent');
-
+    
+    // Don't show the same announcement if already displayed
+    if (lastDisplayedAnnouncement === message && notification.classList.contains('show')) {
+        return;
+    }
+    lastDisplayedAnnouncement = message;
+    
     content.innerHTML = `<p>${message}</p>`;
     notification.classList.add('show');
     notification.classList.remove('hide');

@@ -486,176 +486,8 @@ function initializeMenu() {
                 image: itemImage
             };
 
-            // Open payment modal directly
-            openPaymentModal();
-        });
-    });
-                        }
-                    };
-                }
-            }
-                        'chicken curry': '🍗🍛',
-                        'mutton curry': '🍖🍛',
-                        'fish curry': '🐟🍛',
-                        'dal makhani': '🫘🍲',
-                        'paneer tikka masala': '🧀🍛',
-                        'chicken tikka masala': '🍗🍛',
-                        'chicken tandoori': '🔥🍗',
-                        'fish tandoori': '🔥🐟',
-                        'tandoori mix grill': '🔥🍖',
-                        'chicken 65': '🌶️🍗',
-                        'paneer tikka': '🧀🔥',
-                        'malai tikka': '🧈🔥',
-                        'brochettes': '🍢',
-                        'fried rice': '🍳🍚',
-                        'ugali fish': '🐟🌽',
-                        'isombe': '🍌🥬',
-                        'matoke': '🍌🍲',
-                        'akabanzi': '🐟🔥',
-                        'inyama': '🍖🌽',
-                        'street food': '🍜',
-                        'samosa': '🥟',
-                        'pakora': '🥬🍳',
-                        'paneer pakora': '🧀🍳',
-                        'chicken wings': '🍗',
-                        'spring rolls': '🥟',
-                        'hummus': '🫘🫓',
-                        'fish fingers': '🐟🍴',
-                        'onion rings': '🧅🍳',
-                        'garlic naan': '🧄🫓',
-                        'butter naan': '🧈🫓',
-                        'plain naan': '🫓',
-                        'roti': '🫓',
-                        'paratha': '🥐',
-                        'lachha paratha': '🥐',
-                        'kulcha': '🥐',
-                        'cheese naan': '🧀🫓',
-                        'mango lassi': '🥭🥤',
-                        'sweet lassi': '🥤',
-                        'salt lassi': '🧂🥤',
-                        'masala chai': '☕',
-                        'coffee': '☕',
-                        'fresh juice': '🧃',
-                        'soft drinks': '🥤',
-                        'water': '💧',
-                        'gulab jamun': '🍬',
-                        'rasgulla': '🍡',
-                        'gajar ka halwa': '🥕🍮',
-                        'kheer': '🍮',
-                        'ice cream': '🍨',
-                        'brownie': '🍫',
-                        'cheesecake': '🍰',
-                        'tiramisu': '☕🍰',
-                        'special thali': '🍱',
-                        'family combo': '👨‍👩‍👧‍👦🍽️',
-                        'couple date': '💕🍽️',
-                        'party platter': '🎉🍽️',
-                        'grill combo': '🔥🍖',
-                        'veg feast': '🥗'
-                    };
-                    
-                    // Get emoji based on item name
-                    const lowerName = currentItemName.toLowerCase();
-                    let emoji = '🍛';
-                    for (const [key, value] of Object.entries(emojiMap)) {
-                        if (lowerName.includes(key)) {
-                            emoji = value;
-                            break;
-                        }
-                    }
-                    
-                    // Create SVG data URL with emoji
-                    const svgContent = `<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'><rect width='150' height='150' fill='#fff5e6'/><text x='75' y='90' font-size='80' text-anchor='middle'>${emoji}</text></svg>`;
-                    itemImageElement.src = 'data:image/svg+xml;base64,' + btoa(svgContent);
-                };
-            }
-                        'chicken biryani': '🍗🍚',
-                        'mutton biryani': '🍖🍚',
-                        'prawn biryani': '🦐🍚',
-                        'vegetable biryani': '🥬🍚',
-                        'egg biryani': '🥚🍚',
-                        'fish biryani': '🐟🍚',
-                        'dam biryani': '👑🍚',
-                        'hyderabadi biryani': '👑🍚',
-                        'butter chicken': '🧈🍗',
-                        'palak paneer': '🥬🧀',
-                        'chicken curry': '🍗🍛',
-                        'mutton curry': '🍖🍛',
-                        'fish curry': '🐟🍛',
-                        'dal makhani': '🫘🍲',
-                        'paneer tikka masala': '🧀🍛',
-                        'chicken tikka masala': '🍗🍛',
-                        'chicken tandoori': '🔥🍗',
-                        'fish tandoori': '🔥🐟',
-                        'tandoori mix grill': '🔥🍖',
-                        'chicken 65': '🌶️🍗',
-                        'paneer tikka': '🧀🔥',
-                        'malai tikka': '🧈🔥',
-                        'brochettes': '🍢',
-                        'fried rice': '🍳🍚',
-                        'ugali fish': '🐟🌽',
-                        'isombe': '🍌🥬',
-                        'matoke': '🍌🍲',
-                        'akabanzi': '🐟🔥',
-                        'inyama': '🍖🌽',
-                        'street food': '🍜',
-                        'samosa': '🥟',
-                        'pakora': '🥬🍳',
-                        'paneer pakora': '🧀🍳',
-                        'chicken wings': '🍗',
-                        'spring rolls': '🥟',
-                        'hummus': '🫘🫓',
-                        'fish fingers': '🐟🍴',
-                        'onion rings': '🧅🍳',
-                        'garlic naan': '🧄🫓',
-                        'butter naan': '🧈🫓',
-                        'plain naan': '🫓',
-                        'roti': '🫓',
-                        'paratha': '🥐',
-                        'lachha paratha': '🥐',
-                        'kulcha': '🥐',
-                        'cheese naan': '🧀🫓',
-                        'mango lassi': '🥭🥤',
-                        'sweet lassi': '🥤',
-                        'salt lassi': '🧂🥤',
-                        'masala chai': '☕',
-                        'coffee': '☕',
-                        'fresh juice': '🧃',
-                        'soft drinks': '🥤',
-                        'water': '💧',
-                        'gulab jamun': '🍬',
-                        'rasgulla': '🍡',
-                        'gajar ka halwa': '🥕🍮',
-                        'kheer': '🍮',
-                        'ice cream': '🍨',
-                        'brownie': '🍫',
-                        'cheesecake': '🍰',
-                        'tiramisu': '☕🍰',
-                        'special thali': '🍱',
-                        'family combo': '👨‍👩‍👧‍👦🍽️',
-                        'couple date': '💕🍽️',
-                        'party platter': '🎉🍽️',
-                        'grill combo': '🔥🍖',
-                        'veg feast': '🥗'
-                    };
-                    
-                    // Get emoji based on item name
-                    const lowerName = itemName.toLowerCase();
-                    let emoji = '🍛';
-                    for (const [key, value] of Object.entries(emojiMap)) {
-                        if (lowerName.includes(key)) {
-                            emoji = value;
-                            break;
-                        }
-                    }
-                    
-                    // Create SVG data URL with emoji
-                    const svgContent = `<svg xmlns='http://www.w3.org/2000/svg' width='150' height='150' viewBox='0 0 150 150'><rect width='150' height='150' fill='#fff5e6'/><text x='75' y='90' font-size='80' text-anchor='middle'>${emoji}</text></svg>`;
-                    itemImageElement.src = 'data:image/svg+xml;base64,' + btoa(svgContent);
-                };
-            }
-
-            openPaymentModal();
+            // Open order modal directly
+            openModal();
         });
     });
 
@@ -671,6 +503,30 @@ function initializeMenu() {
         document.body.style.overflow = 'auto';
         orderForm.reset();
     }
+
+    // Go to payment from order modal
+    function goToPayment() {
+        const customerName = document.getElementById('customerName').value.trim();
+        const customerPhone = document.getElementById('customerPhone').value.trim();
+        const pickupTime = document.getElementById('pickupTime').value;
+        
+        if (!customerName || !customerPhone || !pickupTime) {
+            showNotification('❌ Please fill in your name, phone, and pickup time first.');
+            return;
+        }
+        
+        // Transfer data to payment modal
+        document.getElementById('customerNamePayment').value = customerName;
+        document.getElementById('customerPhonePayment').value = customerPhone;
+        document.getElementById('pickupTimePayment').value = pickupTime;
+        document.getElementById('specialInstructionsPayment').value = document.getElementById('specialInstructions').value;
+        
+        closeOrderModal();
+        openPaymentModal();
+    }
+    
+    // Make goToPayment available globally
+    window.goToPayment = goToPayment;
 
     closeModal.addEventListener('click', closeOrderModal);
 
@@ -1288,3 +1144,4 @@ if (document.readyState === 'loading') {
     // DOM already loaded (script loaded dynamically)
     initializeMenu();
 }
+
