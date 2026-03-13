@@ -469,35 +469,38 @@ function initializeMenu() {
         });
     });
 
-// Wait for DOM to be ready
-document.addEventListener('DOMContentLoaded', function() {
-    // Get menu items after DOM is ready
-    const menuItems = document.querySelectorAll('.menu-item');
-    const orderModal = document.getElementById('orderModal');
-    
-    // Menu item click to open order modal
+// Menu item click to open order modal
     menuItems.forEach(item => {
         item.addEventListener('click', function () {
             const itemName = this.querySelector('.item-name').textContent;
             const itemPrice = this.querySelector('.item-price').textContent;
             
-            // Try to get internet image or local image
-            const localImage = this.getAttribute('data-image');
+            // Get internet image
             const internetImage = this.getAttribute('data-internet-image') || getInternetImageUrl(itemName);
-            const itemImage = internetImage || localImage;
 
             selectedItem = {
                 name: itemName,
                 price: itemPrice,
-                image: itemImage
+                image: internetImage
             };
+
+            // Show in order modal
+            selectedItemName.textContent = itemName;
+            selectedItemPrice.textContent = itemPrice;
+            
+            // Set image
+            const itemImageElement = document.getElementById('selectedItemImage');
+            if (itemImageElement) {
+                if (internetImage) {
+                    itemImageElement.src = internetImage;
+                }
+            }
 
             // Open order modal
             orderModal.classList.add('active');
             document.body.style.overflow = 'hidden';
         });
     });
-});
 
     // Open modal
     function openModal() {
