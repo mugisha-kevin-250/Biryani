@@ -469,7 +469,13 @@ function initializeMenu() {
         });
     });
 
-    // Menu item click to open payment modal (purchasing)
+// Wait for DOM to be ready
+document.addEventListener('DOMContentLoaded', function() {
+    // Get menu items after DOM is ready
+    const menuItems = document.querySelectorAll('.menu-item');
+    const orderModal = document.getElementById('orderModal');
+    
+    // Menu item click to open order modal
     menuItems.forEach(item => {
         item.addEventListener('click', function () {
             const itemName = this.querySelector('.item-name').textContent;
@@ -486,10 +492,12 @@ function initializeMenu() {
                 image: itemImage
             };
 
-            // Open order modal directly
-            openModal();
+            // Open order modal
+            orderModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
         });
     });
+});
 
     // Open modal
     function openModal() {
@@ -651,52 +659,62 @@ function initializeMenu() {
 
     // MTN Mobile Money Payment Function
     async function processMTNPayment(customerPhone, mtnPhone, amount, itemName) {
-        // This is a placeholder for actual MTN API integration
-        // In production, you would call your backend server which interfaces with MTN MoMo API
-        
         const orderId = Date.now().toString();
         
         // Prepare payment request data
         const paymentData = {
+            phoneNumber: mtnPhone,
             amount: amount,
             currency: 'RWF',
             externalId: orderId,
-            payer: {
-                partyIdType: 'MSISDN',
-                partyId: mtnPhone.replace(/\+/g, '').replace(/\s/g, '') // Remove + and spaces
-            },
             payerMessage: `Payment for ${itemName} - Biryani House`,
             payeeNote: `Order #${orderId}`
         };
 
-        // Simulate API call (replace with actual MTN API endpoint)
-        console.log('Processing MTN Payment:', paymentData);
-        
-        // In production, you would call your backend:
-        // const response = await fetch('/api/mtn/payment', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify(paymentData)
-        // });
-        
-        // For demo purposes, we'll simulate a successful payment after a delay
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                // Simulate successful payment
-                showNotification('✅ Payment initiated! Please check your phone to confirm.');
+        try {
+            // Call the MTN Payment API
+            const response = await fetch('/api/mtn/request-pay', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json' 
+                },
+                body: JSON.stringify(paymentData)
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                showNotification('✅ Payment initiated! Please check your phone to confirm payment.');
                 
-                // Create the order after payment initiation
+                // Create the order with pending payment status
                 const customerName = document.getElementById('customerNamePayment').value.trim();
                 const customerPhoneNum = document.getElementById('customerPhonePayment').value.trim();
                 const pickupTime = parseInt(document.getElementById('pickupTimePayment').value);
                 const specialInstructions = document.getElementById('specialInstructionsPayment').value.trim();
                 
-                createOrder(customerName, customerPhoneNum, pickupTime, specialInstructions, 'paid_online', mtnPhone);
+                createOrder(customerName, customerPhoneNum, pickupTime, specialInstructions, 'payment_pending', mtnPhone);
                 closePaymentModalFunc();
                 
-                resolve({ status: 'success', message: 'Payment initiated' });
-            }, 1500);
-        });
+                return result;
+            } else {
+                showNotification('❌ Payment failed: ' + (result.message || 'Please try again'));
+                throw new Error(result.message || 'Payment failed');
+            }
+        } catch (error) {
+            console.error('Payment error:', error);
+            // Fallback: If API is not available, simulate success for demo
+            showNotification('⚠️ Payment service unavailable. Order saved for pay at pickup.');
+            
+            const customerName = document.getElementById('customerNamePayment').value.trim();
+            const customerPhoneNum = document.getElementById('customerPhonePayment').value.trim();
+            const pickupTime = parseInt(document.getElementById('pickupTimePayment').value);
+            const specialInstructions = document.getElementById('specialInstructionsPayment').value.trim();
+            
+            createOrder(customerName, customerPhoneNum, pickupTime, specialInstructions, 'pay_at_pickup', null);
+            closePaymentModalFunc();
+            
+            return { status: 'fallback', message: 'Order saved for pay at pickup' };
+        }
     }
 
     // Create order function

@@ -11,3 +11,18 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
+
+  - type: web
+    name: biryani-api
+    env: node
+    buildCommand: "npm install express body-parser cors uuid"
+    startCommand: "node payment-api.js"
+    envVars:
+      - key: NODE_VERSION
+        value: "18"
+      - key: MTN_SUBSCRIPTION_KEY
+        value: "YOUR_SUBSCRIPTION_KEY"
+      - key: MTN_API_KEY
+        value: "YOUR_API_KEY"
+      - key: MTN_API_SECRET
+        value: "YOUR_API_SECRET"
