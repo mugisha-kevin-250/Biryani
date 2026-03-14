@@ -469,7 +469,7 @@ function initializeMenu() {
         });
     });
 
-// Menu item click to open order modal
+    // Menu item click to open order modal
     menuItems.forEach(item => {
         item.addEventListener('click', function () {
             const itemName = this.querySelector('.item-name').textContent;
