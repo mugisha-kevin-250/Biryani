@@ -218,11 +218,21 @@ function initializeMenu() {
     } else {
         console.warn('⚠️ Firebase SDK not loaded. Using offline mode (localStorage).');
     }
-    // Elements
-    const searchInput = document.getElementById('searchInput');
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const menuSections = document.querySelectorAll('.menu-section');
-    const menuItems = document.querySelectorAll('.menu-item');
+    
+    // Wait for DOM to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('📄 DOM loaded, initializing menu...');
+        
+        // Elements
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const menuSections = document.querySelectorAll('.menu-section');
+        const menuItems = document.querySelectorAll('.menu-item');
+        
+        console.log('Found searchInput:', !!searchInput);
+        console.log('Found filterBtns:', filterBtns.length);
+        console.log('Found menuItems:', menuItems.length);
+        console.log('Found menuSections:', menuSections.length);
 
     // Order modal elements
     const orderModal = document.getElementById('orderModal');
@@ -1124,7 +1134,42 @@ function initializeMenu() {
             this.dispatchEvent(new Event('input'));
             this.blur();
         }
+        if (e.key === 'Enter') {
+            performSearch();
+        }
     });
+
+    // Perform search function
+    window.performSearch = function() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        let hasResults = false;
+
+        menuSections.forEach(section => {
+            const items = section.querySelectorAll('.menu-item');
+            let sectionHasResults = false;
+
+            items.forEach(item => {
+                const itemName = item.querySelector('.item-name').textContent.toLowerCase();
+                const itemPrice = item.querySelector('.item-price').textContent.toLowerCase();
+
+                if (itemName.includes(searchTerm) || itemPrice.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                    sectionHasResults = true;
+                    hasResults = true;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            if (searchTerm === '') {
+                section.style.display = 'block';
+            } else {
+                section.style.display = sectionHasResults ? 'block' : 'none';
+            }
+        });
+
+        showNoResults(!hasResults && searchTerm !== '');
+    };
 
     // Escape key to close modal
     document.addEventListener('keydown', function (e) {
@@ -1135,6 +1180,7 @@ function initializeMenu() {
 
     console.log('🎉 SHAZAM Coffee Shop App with Firebase Loaded!');
     console.log('📱 Mobile responsive | 🔍 Search & filter | 🛒 Order system active | 🌐 Cloud synced');
+}); // End DOMContentLoaded
 }
 
 // Contact info modal toggle
