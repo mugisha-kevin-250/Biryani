@@ -1181,7 +1181,6 @@ function initializeMenu() {
     console.log('🎉 SHAZAM Coffee Shop App with Firebase Loaded!');
     console.log('📱 Mobile responsive | 🔍 Search & filter | 🛒 Order system active | 🌐 Cloud synced');
 }); // End DOMContentLoaded
-}
 
 // Contact info modal toggle
 function toggleContactInfo(event) {
